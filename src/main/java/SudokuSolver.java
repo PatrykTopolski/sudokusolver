@@ -5,13 +5,19 @@ public class SudokuSolver {
   This code passes all Leetcode test cases as of Oct. 22nd 2019
 */
 
+    private Timer timer;
     private final char EMPTY_ENTRY = '.';
+
+    public SudokuSolver(){
+        timer = new Timer();
+    }
 
     public void solveSudoku(char[][] board) {
         canSolveSudokuFromCell(0, 0, board);
     }
 
     private boolean canSolveSudokuFromCell(int row, int col, char[][] board) {
+
         if (col == board[row].length) {
             col = 0;
             row++;
