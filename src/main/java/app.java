@@ -19,6 +19,8 @@ public class app {
         SudokuSolver solver = new SudokuSolver();
         solver.solveSudoku(board.getBoard());
         board.display();
+        System.out.println("Time taken to process: " + solver.getTimer().countDurationTime());
+
     }
 
 }

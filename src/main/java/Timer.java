@@ -18,4 +18,8 @@ public class Timer {
     public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
+
+    public long countDurationTime(){
+        return endTime - startTime;
+    }
 }

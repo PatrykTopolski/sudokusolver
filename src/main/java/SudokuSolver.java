@@ -12,8 +12,14 @@ public class SudokuSolver {
         timer = new Timer();
     }
 
+    public Timer getTimer() {
+        return timer;
+    }
+
     public void solveSudoku(char[][] board) {
+        timer.setStartTime(System.currentTimeMillis());
         canSolveSudokuFromCell(0, 0, board);
+        timer.setEndTime(System.currentTimeMillis());
     }
 
     private boolean canSolveSudokuFromCell(int row, int col, char[][] board) {
@@ -31,19 +37,19 @@ public class SudokuSolver {
         if (board[row][col] != EMPTY_ENTRY) {
             return canSolveSudokuFromCell(row, col + 1, board);
         }
-
+        //start to iterate from 1 to 9 and check each value - is it valid in this place
         for (int value = 1; value <= board.length; value++) {
             char charToPlace = (char) (value + '0');
 
             if (canPlaceValue(board, row, col, charToPlace)) {
                 board[row][col] = charToPlace;
+                //recursive call for method on next cell
                 if (canSolveSudokuFromCell(row, col + 1, board)) {
                     return true;
                 }
                 board[row][col] = EMPTY_ENTRY;
             }
         }
-
         return false;
     }
 
