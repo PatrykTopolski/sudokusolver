@@ -23,7 +23,6 @@ public class SudokuSolver {
     }
 
     private boolean canSolveSudokuFromCell(int row, int col, char[][] board) {
-
         if (col == board[row].length) {
             col = 0;
             row++;
@@ -40,7 +39,6 @@ public class SudokuSolver {
         //start to iterate from 1 to 9 and check each value - is it valid in this place
         for (int value = 1; value <= board.length; value++) {
             char charToPlace = (char) (value + '0');
-
             if (canPlaceValue(board, row, col, charToPlace)) {
                 board[row][col] = charToPlace;
                 //recursive call for method on next cell
@@ -55,18 +53,21 @@ public class SudokuSolver {
 
     private boolean canPlaceValue(char[][] board, int row, int col, char charToPlace) {
         // Check column of the placement
-        for (char[] placementRow: board) {
-            if (charToPlace == placementRow[col]){
-                return false;
-            }
-        }
+        ColumnChecker colCheck = new ColumnChecker(board, col, charToPlace);
+        Thread checkColumnThread = new Thread(colCheck);
+        checkColumnThread.start();
+        if (!colCheck.getResult()){
+            return false;
+        };
+
 
         // Check row of the placement
-        for (int i = 0; i < board[row].length; i++) {
-            if (charToPlace == board[row][i]) {
-                return false;
-            }
-        }
+       RowChecker rowChecker = new RowChecker(board, row, charToPlace);
+       Thread rowCheckThread = new Thread(rowChecker);
+       rowCheckThread.start();
+       if(!rowChecker.getResult()){
+           return false;
+       }
 
         // Check region constraints - get the size of the sub-box
         int regionSize = (int) Math.sqrt(board.length);
