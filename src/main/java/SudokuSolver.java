@@ -52,7 +52,7 @@ public class SudokuSolver {
     }
 
     private boolean canPlaceValue(char[][] board, int row, int col, char charToPlace) {
-        // Check column of the placement
+        // Thread to check column of the placement
         ColumnChecker colCheck = new ColumnChecker(board, col, charToPlace);
         Thread checkColumnThread = new Thread(colCheck);
         checkColumnThread.start();
@@ -60,8 +60,7 @@ public class SudokuSolver {
             return false;
         };
 
-
-        // Check row of the placement
+        // Thread to check row of the placement
        RowChecker rowChecker = new RowChecker(board, row, charToPlace);
        Thread rowCheckThread = new Thread(rowChecker);
        rowCheckThread.start();
@@ -70,21 +69,12 @@ public class SudokuSolver {
        }
 
         // Check region constraints - get the size of the sub-box
-        int regionSize = (int) Math.sqrt(board.length);
-
-        int verticalBoxIndex = row / regionSize;
-        int horizontalBoxIndex = col / regionSize;
-
-        int topLeftOfSubBoxRow = regionSize * verticalBoxIndex;
-        int topLeftOfSubBoxCol = regionSize * horizontalBoxIndex;
-
-        for (int i = 0; i < regionSize; i++) {
-            for (int j = 0; j < regionSize; j++) {
-                if (charToPlace == board[topLeftOfSubBoxRow + i][topLeftOfSubBoxCol + j]) {
-                    return false;
-                }
-            }
-        }
+       SubSectionChecker sectionChecker = new SubSectionChecker(board, row, col, charToPlace);
+       Thread sectionCheckThread = new Thread(sectionChecker);
+       sectionChecker.run();
+       if(!sectionChecker.getResult()){
+           return false;
+       }
 
         return true;
     }
