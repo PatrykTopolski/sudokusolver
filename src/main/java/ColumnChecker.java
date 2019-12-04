@@ -20,5 +20,12 @@ public class ColumnChecker implements Runnable {
                 result = false;
             }
         }
+
+        if(Thread.interrupted()){
+            col = 0;
+            charToPlace = '.';
+            result = true;
+            return;
+        }
     }
 }

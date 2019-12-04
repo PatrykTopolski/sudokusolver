@@ -1,9 +1,7 @@
 public class SudokuSolver {
 
-    /*
-  Sudoku Solver - LeetCode: https://leetcode.com/problems/sudoku-solver/
-  This code passes all Leetcode test cases as of Oct. 22nd 2019
-*/
+    /* Sudoku Solver - LeetCode: https://leetcode.com/problems/sudoku-solver/
+  This code passes all Leetcode test cases as of Oct. 22nd 2019*/
 
     private Timer timer;
     private final char EMPTY_ENTRY = '.';
@@ -16,13 +14,13 @@ public class SudokuSolver {
         return timer;
     }
 
-    public void solveSudoku(char[][] board) {
+    public void solveSudoku(char[][] board){
         timer.setStartTime(System.currentTimeMillis());
         canSolveSudokuFromCell(0, 0, board);
         timer.setEndTime(System.currentTimeMillis());
     }
 
-    private boolean canSolveSudokuFromCell(int row, int col, char[][] board) {
+    private boolean canSolveSudokuFromCell(int row, int col, char[][] board){
         if (col == board[row].length) {
             col = 0;
             row++;
@@ -52,13 +50,13 @@ public class SudokuSolver {
     }
 
     private boolean canPlaceValue(char[][] board, int row, int col, char charToPlace) {
-        // Thread to check column of the placement
+       //  Thread to check column of the placement
         ColumnChecker colCheck = new ColumnChecker(board, col, charToPlace);
         Thread checkColumnThread = new Thread(colCheck);
         checkColumnThread.start();
         if (!colCheck.getResult()){
             return false;
-        };
+        }
 
         // Thread to check row of the placement
        RowChecker rowChecker = new RowChecker(board, row, charToPlace);
@@ -76,6 +74,39 @@ public class SudokuSolver {
            return false;
        }
 
+
+        // Check column of the placement
+//        for (char[] placementRow: board) {
+//            if (charToPlace == placementRow[col]){
+//                return false;
+//            }
+//        }
+
+        // Check row of the placement
+//        for (int i = 0; i < board[row].length; i++) {
+//            if (charToPlace == board[row][i]) {
+//                return false;
+//            }
+//        }
+
+        // Check region constraints - get the size of the sub-box
+//        int regionSize = (int) Math.sqrt(board.length);
+//
+//        int verticalBoxIndex = row / regionSize;
+//        int horizontalBoxIndex = col / regionSize;
+//
+//        int topLeftOfSubBoxRow = regionSize * verticalBoxIndex;
+//        int topLeftOfSubBoxCol = regionSize * horizontalBoxIndex;
+//
+//        for (int i = 0; i < regionSize; i++) {
+//            for (int j = 0; j < regionSize; j++) {
+//                if (charToPlace == board[topLeftOfSubBoxRow + i][topLeftOfSubBoxCol + j]) {
+//                    return false;
+//                }
+//            }
+//        }
+//
         return true;
     }
+
 }

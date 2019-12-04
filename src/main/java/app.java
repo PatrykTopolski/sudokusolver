@@ -26,7 +26,7 @@ public class app {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         SudokuBoard board = new SudokuBoard(GRID_TO_SOLVE);
         SudokuSolver solver = new SudokuSolver();
         solver.solveSudoku(board.getBoard());
